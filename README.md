@@ -1,7 +1,4 @@
 # CPANet-Jittor  
-*(Jittor Implementation of [CPANet](https://ieeexplore.ieee.org/document/10049179) for Few-Shot Semantic Segmentation)*
-
-[![Jittor](https://img.shields.io/badge/Jittor-1.3.9.14-blue)](https://cg.cs.tsinghua.edu.cn/jittor/)
 
 ---
 
@@ -21,7 +18,7 @@
 ---
 
 ## 📖 项目简介
-本项目是 **CPANet** 在 [Jittor](https://cg.cs.tsinghua.edu.cn/jittor/) 框架下的复现版本，面向 Few-Shot Semantic Segmentation 任务，提供了可复现的训练、测试和消融实验。
+本项目是[CPANet](https://ieeexplore.ieee.org/document/10049179)在 [Jittor](https://cg.cs.tsinghua.edu.cn/jittor/) 框架下的复现版本，面向 Few-Shot Semantic Segmentation 任务，提供了可复现的训练、测试和消融实验。
 
 ---
 
