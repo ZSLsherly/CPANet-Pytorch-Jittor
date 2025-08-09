@@ -164,13 +164,13 @@ def main_worker(argss):
 
 
     # 进行文件记录
-    # timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # log_path = os.path.join(args.save_path, f"train_val_log_{timestamp}.txt")
-    # log_file = open(log_path, "w")  # 写表头
-    # log_file.write("# Training and Validation Metrics Log\n")
-    # log_file.write("# None 代表该轮没有进行验证\n\n")
-    # log_file.write("Epoch,Train_Loss,Train_mIoU,Train_mAcc,Train_AllAcc,"
-    #                "Val_Loss,Val_mIoU,Val_mAcc,Val_AllAcc,Val_Class_mIoU\n")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = os.path.join(args.save_path, f"train_val_log_{timestamp}.txt")
+    log_file = open(log_path, "w")  # 写表头
+    log_file.write("# Training and Validation Metrics Log\n")
+    log_file.write("# None 代表该轮没有进行验证\n\n")
+    log_file.write("Epoch,Train_Loss,Train_mIoU,Train_mAcc,Train_AllAcc,"
+                   "Val_Loss,Val_mIoU,Val_mAcc,Val_AllAcc,Val_Class_mIoU\n")
 
 
     for epoch in range(args.start_epoch, args.epochs):
@@ -207,18 +207,18 @@ def main_worker(argss):
                 max_fbiou = mIoU_val
             logger.info('Best Epoch {:.1f}, Best IOU {:.4f} Best FB-IoU {:4F}'.format(best_epoch, max_iou, max_fbiou))
 
-    #         log_file.write(
-    #             f"Epoch {epoch_log}: "
-    #             f"{to_item(loss_train):.4f},{to_item(mIoU_train):.4f},{to_item(mAcc_train):.4f},{to_item(allAcc_train):.4f},"
-    #             f"{to_item(loss_val) if to_item(loss_val) is not None else 'None'},"
-    #             f"{to_item(mIoU_val) if to_item(mIoU_val) is not None else 'None'},"
-    #             f"{to_item(mAcc_val) if to_item(mAcc_val) is not None else 'None'},"
-    #             f"{to_item(allAcc_val) if to_item(allAcc_val) is not None else 'None'},"
-    #             f"{to_item(class_miou) if to_item(class_miou) is not None else 'None'}\n"
-    #         )
-    #         log_file.flush()
-    #
-    # log_file.close()
+            log_file.write(
+                f"Epoch {epoch_log}: "
+                f"{to_item(loss_train):.4f},{to_item(mIoU_train):.4f},{to_item(mAcc_train):.4f},{to_item(allAcc_train):.4f},"
+                f"{to_item(loss_val) if to_item(loss_val) is not None else 'None'},"
+                f"{to_item(mIoU_val) if to_item(mIoU_val) is not None else 'None'},"
+                f"{to_item(mAcc_val) if to_item(mAcc_val) is not None else 'None'},"
+                f"{to_item(allAcc_val) if to_item(allAcc_val) is not None else 'None'},"
+                f"{to_item(class_miou) if to_item(class_miou) is not None else 'None'}\n"
+            )
+            log_file.flush()
+
+    log_file.close()
     filename = (args.save_path + '/final.pkl')
     logger.info(('Saving checkpoint to: ' + filename))
     jt.save({'epoch': args.epochs, 'state_dict': model.state_dict()}, filename)

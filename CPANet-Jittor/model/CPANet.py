@@ -261,7 +261,21 @@ class cpanet(nn.Module):
 
         self.SSA = SSA()
 
+        # 全卷积解码器(用于消融实验)
+        # self.SSA = nn.Sequential(
+        #     nn.Conv2d(256, 2, kernel_size=(1, 1))
+        # )
+
         self.CPP = CPP(reduce_dim)
+    # 代替CPP的mask_pool
+    def masked_avg_pooling(x, mask):
+        # x: [B, C, H, W]
+        # mask: [B, 1, H, W]，元素为0/1，或者0~1的权重
+        masked_x = x * mask
+        summed = masked_x.sum(dim=(2, 3))  # [B, C]
+        mask_sum = mask.sum(dim=(2, 3)).clamp(min=1e-6)  # 避免除0 [B, 1]
+        avg = summed / mask_sum
+        return avg  # [B, C]
 
     def execute(self,x,s_x,s_y,y=None):
 
@@ -346,7 +360,7 @@ class cpanet(nn.Module):
                 supp_pred_mask = self.cls(supp_out)
                 supp_pred_mask_list.append(supp_pred_mask)
 
-        alpah = 0.6
+        alpah = 0.4
         if self.is_training():
             supp_loss_list = []
             loss = 0.

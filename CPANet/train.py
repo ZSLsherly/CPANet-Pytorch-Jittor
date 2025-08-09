@@ -6,6 +6,7 @@ import random
 import time
 import cv2
 import numpy as np
+from datetime import datetime
 # >>>>>>>>>>pytorch Lab<<<<<<<<<
 import torch
 import torch.backends.cudnn as cudnn
@@ -205,6 +206,14 @@ def main_worker(argss):
     best_epoch = 0
 
     filename = 'CPANet.pth'
+    # 进行文件记录
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_path = os.path.join(args.save_path, f"train_val_log_{timestamp}.txt")
+    log_file = open(log_path, "w")  # 写表头
+    log_file.write("# Training and Validation Metrics Log\n")
+    log_file.write("# None 代表该轮没有进行验证\n\n")
+    log_file.write("Epoch,Train_Loss,Train_mIoU,Train_mAcc,Train_AllAcc,"
+                   "Val_Loss,Val_mIoU,Val_mAcc,Val_AllAcc,Val_Class_mIoU\n")
 
     for epoch in range(args.start_epoch, args.epochs):
         if args.fix_random_seed_val:
@@ -244,6 +253,18 @@ def main_worker(argss):
                 max_fbiou = mIoU_val
             logger.info('Best Epoch {:.1f}, Best IOU {:.4f} Best FB-IoU {:4F}'.format(best_epoch, max_iou, max_fbiou))
 
+            log_file.write(
+                f"Epoch {epoch_log}: "
+                f"{loss_train:.4f},{(mIoU_train):.4f},{mAcc_train:.4f},{allAcc_train:.4f},"
+                f"{loss_val if loss_val is not None else 'None'},"
+                f"{mIoU_val if mIoU_val is not None else 'None'},"
+                f"{mAcc_val if mAcc_val is not None else 'None'},"
+                f"{allAcc_val if allAcc_val is not None else 'None'},"
+                f"{class_miou if class_miou is not None else 'None'}\n"
+            )
+            log_file.flush()
+
+    log_file.close()
     filename = args.save_path + '/final.pth'
     logger.info('Saving checkpoint to: ' + filename)
     torch.save({'epoch': args.epochs, 'state_dict': model.state_dict(), 'optimizer': optimizer.state_dict()}, filename)

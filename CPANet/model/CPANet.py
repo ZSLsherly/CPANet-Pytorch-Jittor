@@ -227,11 +227,7 @@ class cpanet(nn.Module):
         query_pred_mask = self.conv_3x3(query_out)
         query_pred_mask = F.interpolate(query_pred_mask, size=(h, w), mode='bilinear', align_corners=True)  # [1,256,200,200]
 
-        print(11111)
-        print(query_pred_mask.size())
         query_pred_mask = self.DP(query_pred_mask)
-        print(query_pred_mask[0].size())
-        print(11111)
 
         query_pred_mask_save = torch.argmax(query_pred_mask[0].squeeze(0).permute(1, 2, 0), axis=-1).detach().cpu().numpy()
         query_pred_mask_save[query_pred_mask_save!=0] = 255
@@ -251,7 +247,7 @@ class cpanet(nn.Module):
                 supp_pred_mask = self.cls(supp_out)
                 supp_pred_mask_list.append(supp_pred_mask)
 
-        alpah = 0.4
+        alpah = 0.8
         if self.training:
             supp_loss_list = []
             loss = 0.
