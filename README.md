@@ -53,8 +53,8 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 #### 🔹 Jittor 版本（本复现）
 | Backbone  | Method | mIoU (1-shot) | FB-IoU (1-shot) |
 |-----------|--------|---------------|-----------------|
-| VGG-16    | Ours   | **54.04**     | **72.43**       |
-| ResNet-50 | Ours   | **58.07**     | **74.42**       |
+| VGG-16    | Ours   |   54.04       |   72.43         |
+| ResNet-50 | Ours   |   58.07       |   74.42         |
 
 #### 🔹 PyTorch 版本（原论文结果）
 | Backbone  | Method | mIoU (1-shot) | FB-IoU (1-shot) |
