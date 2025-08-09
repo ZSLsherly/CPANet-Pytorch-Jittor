@@ -168,7 +168,7 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 
 起初怀疑是代码逻辑问题，反复查阅 GitHub issue、Jittor 论坛、CSDN 文章，并借助 AI 辅助排查。面对逻辑无误的代码，反复调试一周未果。  
 
-最终通过**重新配置环境**（Python 3.8 + CUDA 11.3）解决了问题，训练正常恢复。  
+最终通过**重新配置环境**（Python 3.8 + CUDA 11.3）解决了问题，训练恢复正常。  
 
 ---
 
