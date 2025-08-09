@@ -74,6 +74,8 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 #### 测试集 Loss  
 ![Test Loss](png/val_loss_compare.png)
 
+> 可以看到，在 VGG16 Backbone 下，Jittor 版本虽然在训练集上loss较高，但在测试集上loss却略低于Pytorch版，两者训练是基本等价的。
+
 
 ## ⚙ 消融实验
 
