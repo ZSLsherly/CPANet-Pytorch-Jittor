@@ -1,9 +1,4 @@
 # CPANet-Jittor  
-*(Jittor Implementation of [CPANet](https://ieeexplore.ieee.org/document/10049179) for Few-Shot Semantic Segmentation)*
-
-[![Jittor](https://img.shields.io/badge/Jittor-1.3.9.14-blue)](https://cg.cs.tsinghua.edu.cn/jittor/)
-
----
 
 ## 📚 目录
 - [项目简介](#项目简介)
@@ -21,7 +16,7 @@
 ---
 
 ## 📖 项目简介
-本项目是 **CPANet** 在 [Jittor](https://cg.cs.tsinghua.edu.cn/jittor/) 框架下的复现版本，面向 Few-Shot Semantic Segmentation 任务，提供了可复现的训练、测试和消融实验。
+本项目是[CPANet](https://ieeexplore.ieee.org/document/10049179)在 [Jittor](https://cg.cs.tsinghua.edu.cn/jittor/) 框架下的复现版本，面向 Few-Shot Semantic Segmentation 任务，提供了可复现的训练、测试和消融实验。
 
 ---
 
@@ -58,8 +53,8 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 #### 🔹 Jittor 版本（本复现）
 | Backbone  | Method | mIoU (1-shot) | FB-IoU (1-shot) |
 |-----------|--------|---------------|-----------------|
-| VGG-16    | Ours   | **52.73**     | **69.78**       |
-| ResNet-50 | Ours   | **58.07**     | **74.42**       |
+| VGG-16    | Ours   |   54.04       |   72.43         |
+| ResNet-50 | Ours   |   58.07       |   74.42         |
 
 #### 🔹 PyTorch 版本（原论文结果）
 | Backbone  | Method | mIoU (1-shot) | FB-IoU (1-shot) |
@@ -74,10 +69,10 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 ### 📉 Loss 曲线
 
 #### 训练集 Loss  
-![Train Loss](train.png)
+![Train Loss](png/train_loss_compare.png)
 
 #### 测试集 Loss  
-![Test Loss](test.png)
+![Test Loss](png/val_loss_compare.png)
 
 
 ## ⚙ 消融实验
@@ -96,12 +91,12 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 | CPP | SA  | SSA | mIoU (1-shot) | FB-IoU (1-shot) |
 |:---:|:---:|:---:|:-------------:|:---------------:|
 | ✓   | ✗   | ✗   | 42.30         | 64.26           |
-| ✗   | ✓   | ✗   | 46.84         | 67.23           |
+| ✗   | ✓   | ✗   | 49.31         | 69.41           |
 | ✗   | ✗   | ✓   | 52.89         | 72.19           |
-| ✓   | ✓   | ✗   | 49.94         | 68.30           |
+| ✓   | ✓   | ✗   | 49.44         | 68.23           |
 | ✗   | ✓   | ✓   | 53.64         | 71.27           |
-| ✓   | ✗   | ✓   | 51.36         | 70.28           |
-| ✓   | ✓   | ✓   | **54.05**     | **72.56**       |
+| ✓   | ✗   | ✓   | 51.84         | 70.91           |
+| ✓   | ✓   | ✓   | **54.04**     | **72.43**       |
 
 #### 🔹 PyTorch 版本（原论文，ResNet-50 Backbone）
 | CPP | SA  | SSA | mIoU (1-shot) | FB-IoU (1-shot) |
@@ -116,8 +111,9 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 
 ### 📌 结果分析
 - **SSA 模块** 对提升性能作用显著，单独加入时 mIoU 有明显提升。  
-- **CPP 模块** 在 VGG16 Backbone 下单独使用时反而性能下降，但与其他模块结合可获得最佳效果。  
-- **SA 模块** 与 CPP 结合后在 PyTorch 版本中提升显著，说明其在更强 Backbone 下的作用更明显。
+- **CPP 模块** 在 Jittor (VGG-16) 下单独效果有限，但与其他模块结合有明显提升。  
+- **SA 模块** 与 CPP 在 PyTorch (ResNet-50) 下结合效果突出.
+- 三模块联合表现最佳，体现模块间良好协同作用。  
 
 
 ## ⚙ 参数消融
@@ -135,10 +131,10 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 |:----:|:-------------:|:---------------:|
 | 0.0  | 48.58         | 68.34           |
 | 0.2  | 49.68         | 69.95           |
-| 0.4  | **54.14**     | 70.63           |
-| 0.6  | 48.29         | **70.09**       |
-| 0.8  | 53.49         | 73.14           |
-| 1.0  | 55.11         | 72.58           |
+| 0.4  | **54.04**     | **72.43**       |
+| 0.6  | 48.29         | 70.09           |
+| 0.8  | 50.91         | 69.66           |
+| 1.0  | 49.79         | 69.06           |
 
 ---
 
@@ -155,13 +151,10 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 
 ---
 
-### 📌 结果分析
+## 模型训练参数
+本项目中得到的所有模型训练参数，包括基准实验与消融实验，均已整理完毕。您可通过以下链接查看并下载。
+- 训练参数：https://pan.baidu.com/s/1JCKKGsdvCHxfcU1IhQW3nw?pwd=ceix 
 
-- Jittor 版本中，k=0.4 时模型取得最佳 mIoU 性能，FB-IoU 在 k=0.6 时略高。  
-- PyTorch 版本与 Jittor 版本表现一致，k=0.4 是一个较优的权重平衡点。  
-- 较大的 k 值（如 0.8 或 1.0）未能提升性能，可能因辅助损失权重过大影响主损失优化。  
-
-综上，建议在训练时优先选择 k=0.4 以获得较稳定且较优的表现。
 
 ## ⚙ 遇到的问题
 
@@ -169,13 +162,13 @@ python train.py --config config/SSD/fold0_resnet50.yaml
 
 我在复现过程中遇到的最大挑战是**环境配置**。  
 
-最初，我使用 Python 3.7 + CUDA 12.6 环境，Jittor 自带测试用例和我实现的简单网络均能**正常收敛且通过测试**。  
+最初，我使用 Python 3.7 + CUDA 12.6 环境，Jittor 自带测试用例和我实现的简单网络均能**通过测试且正常收敛**。  
 
 然而，复现论文模型时出现训练异常，模型几乎不收敛且所有像素预测趋于同一值。  
 
 起初怀疑是代码逻辑问题，反复查阅 GitHub issue、Jittor 论坛、CSDN 文章，并借助 AI 辅助排查。面对逻辑无误的代码，反复调试一周未果。  
 
-最终通过**重新配置环境**（Python 3.8 + CUDA 11.3）解决了问题，训练正常恢复。  
+最终通过**重新配置环境**（Python 3.8 + CUDA 11.3）解决了问题，训练恢复正常。  
 
 ---
 
